@@ -1,0 +1,13 @@
+{
+    "Victim": {
+        "type": "object",
+        "properties": {
+            "owner": {
+                "type": "string"
+            },
+            "data": {
+                "type": "object"
+            }
+        }
+    }
+}
