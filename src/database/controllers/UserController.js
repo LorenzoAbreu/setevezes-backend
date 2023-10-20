@@ -96,6 +96,7 @@ module.exports = class UserController {
             return {
                 status: 200,
                 token: await jwt.sign(newUserData),
+                apiKey,
                 message: "Seja muito bem-vindo, " + username + "!"
             }
         } else {
@@ -132,6 +133,7 @@ module.exports = class UserController {
         return {
             status: 200,
             token: await jwt.sign(userData),
+            apiKey: checkUser.apiKey,
             message: "Seja muito bem-vindo, " + username + "!"
         }
 
