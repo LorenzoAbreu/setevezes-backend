@@ -5,21 +5,14 @@ const AuthController = require('../../../database/controllers/AuthController')
 const Auth = new AuthController()
 const status = require('../../../functions/status')
 
-router.post('/client/victims/create', async (req, res) => {
-
-    const {
-        action
-    } = req.params
-
+router.post('/client/victims', async (req, res) => {
     const body = req.body
 
-    if (action == 'set') {
-        try {
-            const result = await victim.Create(req._username, body)
-            res.json(result)
-        } catch {
-            return res.json(status.server_error)
-        }
+    try {
+        const result = await victim.Create(req._username, body)
+        res.json(result)
+    } catch {
+        return res.json(status.server_error)
     }
 })
 
