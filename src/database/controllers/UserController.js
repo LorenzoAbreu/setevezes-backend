@@ -5,15 +5,19 @@ const EmailValidator = require('email-validator')
 const status = require('../../functions/status')
 
 function generateApiKey() {
-    const hash = crypto.randomBytes(19).toString('hex')
-  
-    let apiKey = ('tpd7'+hash+'ntc')
-  
-    apiKey = apiKey.slice(0,apiKey.length/2) 
-      + 'zzz' + 
-    apiKey.slice(apiKey.length/2,apiKey.length)
-  
-    return apiKey;
+    try {
+        const hash = crypto.randomBytes(19).toString('hex')
+    
+        let apiKey = ('tpd7'+hash+'ntc')
+    
+        apiKey = apiKey.slice(0,parseInt(apiKey.length/2)) 
+        + 'zzz' + 
+        apiKey.slice(parseInt(apiKey.length/2),apiKey.length)
+    
+        return apiKey;
+    } catch {
+        return 'apiKey_rand__'+Math.floor(Math.random() * 999999);
+    }
 }
 
 module.exports = class UserController {
@@ -92,7 +96,7 @@ module.exports = class UserController {
 
         const result = await newUser.save()
 
-        if (result._id) {
+        if (result.username) {
             return {
                 status: 200,
                 token: await jwt.sign(newUserData),
