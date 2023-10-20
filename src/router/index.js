@@ -19,9 +19,9 @@ const importRoute = (FileName) => {
 }
 
 router.all(
-    '/admin/user/:username', 
+    '/admin/users/:username', 
     auth.AdminAuthentication, 
-    importRoute('/admin/User.js')
+    importRoute('/admin/Users.js')
 )
 
 router.all(
