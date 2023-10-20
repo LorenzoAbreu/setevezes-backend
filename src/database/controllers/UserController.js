@@ -10,7 +10,7 @@ function generateApiKey() {
     let apiKey = ('tpd7'+hash+'ntc')
   
     apiKey = apiKey.slice(0,apiKey.length/2) 
-      + '_%_' + 
+      + 'zzz' + 
     apiKey.slice(apiKey.length/2,apiKey.length)
   
     return apiKey;
