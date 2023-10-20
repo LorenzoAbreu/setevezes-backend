@@ -11,6 +11,7 @@ module.exports = class AuthController {
         })
 
         if (!apiKey || !checkApiKey) {
+            console.log(apiKey)
             return res.json(status.invalid_apikey)
         }
 
