@@ -3,14 +3,15 @@ const status = require("../../functions/status");
 
 module.exports = class OriginController {
   async GetAll(owner) {
-    const userData = await User.find({
-      owner,
+    const userData = await User.findOne({
+      username: owner,
     });
 
     if (!owner || !userData) {
       return status.user_not_found;
     }
 
+    console.log(userData);
     return userData.allowedOrigins;
   }
 
