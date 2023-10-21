@@ -4,7 +4,7 @@ const status = require("../../functions/status");
 module.exports = class OriginController {
   async GetAll(owner) {
     const userData = await User.find({
-      username: owner,
+      owner,
     });
 
     if (!owner || !userData) {
