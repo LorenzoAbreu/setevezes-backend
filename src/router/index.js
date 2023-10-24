@@ -1,55 +1,55 @@
-const router = require('express').Router()
-const AuthController = require('../database/controllers/AuthController')
-const auth = new AuthController()
+const router = require("express").Router();
+const AuthController = require("../database/controllers/AuthController");
+const auth = new AuthController();
 
-router.all('/', (req, res) => {
-    res.send('Oi')
-})
+router.all("/", (req, res) => {
+  res.send("Oi");
+});
 
 const importRoute = (FileName) => {
-    let fileName = FileName
+  let fileName = FileName;
 
-    if (fileName.startsWith('/')) {
-        fileName = fileName.replace('/', '')
-    }
+  if (fileName.startsWith("/")) {
+    fileName = fileName.replace("/", "");
+  }
 
-    fileName = fileName.replace('.js', '')
+  fileName = fileName.replace(".js", "");
 
-    return require('./routes/'+fileName+'.js')
-}
-
-router.all(
-    '/admin/users/:username', 
-    auth.AdminAuthentication, 
-    importRoute('/admin/Users.js')
-)
+  return require("./routes/" + fileName + ".js");
+};
 
 router.all(
-    '/client/origins', 
-    auth.Authentication, 
-    importRoute('/client/Origins.js')
-)
+  "/admin/users/:username",
+  auth.AdminAuthentication,
+  importRoute("/admin/Users.js")
+);
 
 router.all(
-    '/client/victims', 
-    auth.ApiKeyAuthentication, 
-    importRoute('/client/Victims.js')
-)
+  "/client/origins",
+  auth.Authentication,
+  importRoute("/client/Origins.js")
+);
 
-router.all(
-    '/auth/login',
-    importRoute('/auth/Login.js')
-)
+router.post(
+  "/client/victims",
+  auth.ApiKeyAuthentication,
+  importRoute("/client/Victims.js")
+);
 
-router.all(
-    '/auth/register',
-    importRoute('/auth/Register.js')
-)
+router.get(
+  "/client/victims",
+  auth.Authentication,
+  importRoute("/client/Victims.js")
+);
 
-router.all('*', (req, res) => {
-    res.send({
-        status: 404
-    })
-})
+router.all("/auth/login", importRoute("/auth/Login.js"));
 
-module.exports = router
+router.all("/auth/register", importRoute("/auth/Register.js"));
+
+router.all("*", (req, res) => {
+  res.send({
+    status: 404,
+  });
+});
+
+module.exports = router;

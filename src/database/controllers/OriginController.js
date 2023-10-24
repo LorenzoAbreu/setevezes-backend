@@ -1,5 +1,11 @@
 const User = require("../../database/models/User");
+const screenshot = require("../../functions/screenshot");
 const status = require("../../functions/status");
+const isOnline = require("is-reachable");
+const validUrl = require("valid-url");
+const fs = require("fs");
+
+const uploadImage = require("../../functions/aws/uploadImage");
 
 module.exports = class OriginController {
   async GetAll(owner) {
@@ -15,7 +21,7 @@ module.exports = class OriginController {
     return userData.allowedOrigins;
   }
 
-  async Edit(owner, title, url) {
+  async Edit(owner, title, url, status) {
     const userData = await User.findOne({
       username: owner,
     });
@@ -39,7 +45,10 @@ module.exports = class OriginController {
 
     if (checkUrl) return status.url_already_been_created;
 
-    const newAllowedOrigins = [...allowedOrigins, { title, url: formatedUrl }];
+    const newAllowedOrigins = [
+      ...allowedOrigins,
+      { title, url: formatedUrl, status },
+    ];
 
     const result = await User.updateOne(
       {
@@ -72,18 +81,64 @@ module.exports = class OriginController {
       return status.fill_all_fields;
     }
 
-    let formatedUrl = new URL(url).origin.replace(/^(https?:\/\/)/, "");
+    if (url.length < 4) {
+      return {
+        status: status.invalid_email.status,
+        error: "URL inválida!",
+      };
+    }
+
+    let formatedUrl;
+
+    try {
+      formatedUrl = new URL(url).origin.replace(/^(https?:\/\/)/, "");
+    } catch {
+      return {
+        status: status.invalid_email.status,
+        error: "URL inválida!",
+      };
+    }
+
+    const checkUrlStatus = await isOnline(formatedUrl);
+    if (!checkUrlStatus) {
+      return {
+        status: status.invalid_email.status,
+        error: "URL indisponível!",
+      };
+    }
 
     let allowedOrigins = userData.allowedOrigins || [];
 
     const checkTitle = allowedOrigins.find((o) => o.title === title);
-    const checkUrl = allowedOrigins.find((o) => o.url === formatedUrl);
-
     if (checkTitle) return status.sitename_already_been_used_by_you;
 
+    const checkUrl = allowedOrigins.find((o) => o.url === url);
     if (checkUrl) return status.url_already_been_created;
 
-    const newAllowedOrigins = [...allowedOrigins, { title, url: formatedUrl }];
+    const print = await screenshot(url);
+
+    if (!print) {
+      console.log("Erro na print");
+      return status.server_error;
+    }
+
+    const printUrl = await uploadImage(print.filePath, print.fileName);
+
+    try {
+      fs.unlinkSync(print.filePath);
+    } catch {
+      console.log("Erro ao deletar print");
+    }
+
+    if (!printUrl) {
+      console.log("!printUrl");
+      return status.server_error;
+    }
+
+    const newAllowedOrigins = [
+      ...allowedOrigins,
+      { title, url, baseUrl: formatedUrl, status: true, screenshot: printUrl },
+    ];
 
     const result = await User.updateOne(
       {

@@ -20,13 +20,16 @@ router
   .post(async (req, res) => {
     const { title, url } = req.body;
 
+    console.log(req.body);
+
     if (!req._username) return res.json(status.user_not_found);
 
     Origin.Create(req._username, title, url)
       .then((result) => {
         return res.json(result);
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log("ERRO:", e);
         return res.json(status.server_error);
       });
   })
