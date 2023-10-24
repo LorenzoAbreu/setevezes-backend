@@ -5,6 +5,7 @@ const fs = require("fs");
 module.exports = async (url) => {
   const browser = await puppeteer.launch({
     headless: "new",
+    executablePath: path.join(__dirname, "src", "chromedriver.exe"),
   });
   const page = await browser.newPage();
 
