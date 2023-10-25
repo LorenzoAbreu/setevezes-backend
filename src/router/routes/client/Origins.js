@@ -38,6 +38,8 @@ router
     const { url } = req.query;
     const username = req._username;
 
+    console.log(req.query);
+
     Origin.Delete(username, url)
       .then((r) => {
         console.log(r);
