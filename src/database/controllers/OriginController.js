@@ -163,6 +163,8 @@ module.exports = class OriginController {
       username: owner,
     });
 
+    console.log("URL: " + url);
+
     if (!userData) {
       return status.user_not_found;
     }
@@ -184,6 +186,9 @@ module.exports = class OriginController {
         status: 200,
         message: "Origem deletada com sucesso!",
       };
-    } else return status.server_error;
+    } else {
+      console.log(result);
+      return status.server_error;
+    }
   }
 };

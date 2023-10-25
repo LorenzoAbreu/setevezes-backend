@@ -40,9 +40,11 @@ router
 
     Origin.Delete(username, url)
       .then((r) => {
+        console.log(r);
         return res.json(r);
       })
       .catch((e) => {
+        console.log(e);
         return res.json(status.server_error);
       });
   });
