@@ -6,6 +6,7 @@ const validUrl = require("valid-url");
 const fs = require("fs");
 
 const uploadImage = require("../../functions/aws/uploadImage");
+const deleteImage = require("../../functions/aws/deleteImage");
 
 module.exports = class OriginController {
   async GetAll(owner) {
@@ -88,10 +89,10 @@ module.exports = class OriginController {
       };
     }
 
-    let formatedUrl;
+    let hostname;
 
     try {
-      formatedUrl = new URL(url).origin.replace(/^(https?:\/\/)/, "");
+      hostname = new URL(url).origin.replace(/^(https?:\/\/)/, "");
     } catch {
       return {
         status: status.invalid_email.status,
@@ -99,7 +100,7 @@ module.exports = class OriginController {
       };
     }
 
-    const checkUrlStatus = await isOnline(formatedUrl);
+    const checkUrlStatus = await isOnline(url);
     if (!checkUrlStatus) {
       return {
         status: status.invalid_email.status,
@@ -137,7 +138,7 @@ module.exports = class OriginController {
 
     const newAllowedOrigins = [
       ...allowedOrigins,
-      { title, url, baseUrl: formatedUrl, status: true, screenshot: printUrl },
+      { title, url, hostname, status: true, screenshot: printUrl },
     ];
 
     const result = await User.updateOne(
@@ -170,6 +171,13 @@ module.exports = class OriginController {
     }
 
     let allowedOrigins = userData.allowedOrigins || [];
+    const checkOrigin = allowedOrigins.find((o) => o.url === url);
+
+    if (!checkOrigin) {
+      console.log("Origem não encontrado");
+      return status.server_error;
+    }
+
     allowedOrigins = allowedOrigins.filter((o) => o.url !== url);
 
     const result = await User.updateOne(
@@ -182,6 +190,12 @@ module.exports = class OriginController {
     );
 
     if (result.modifiedCount > 0) {
+      try {
+        await deleteImage(checkOrigin.screenshot);
+      } catch {
+        console.log("Erro ao deletar imagem do banco dedados");
+      }
+
       return {
         status: 200,
         message: "Origem deletada com sucesso!",
