@@ -35,7 +35,7 @@ router
   })
   .put((req, res) => {})
   .delete((req, res) => {
-    const { url } = req.body;
+    const { url } = req.query;
     const username = req._username;
 
     Origin.Delete(username, url)
