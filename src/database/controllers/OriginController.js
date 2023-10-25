@@ -122,7 +122,7 @@ module.exports = class OriginController {
       return status.server_error;
     }
 
-    const printUrl = await uploadImage(print.filePath, print.fileName);
+    const printUrl = await uploadImage(print.image, print.name);
 
     try {
       fs.unlinkSync(print.filePath);
