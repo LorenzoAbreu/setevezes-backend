@@ -1,19 +1,11 @@
 const { s3 } = require(".");
-const fs = require("fs");
 
-async function uploadImage(filePath, fileName) {
+async function uploadImage(image, name) {
   return new Promise(async (resolve, reject) => {
-    // Key: `${Math.floor(
-    //   Math.random() * 999999999
-    // )}_${file.originalname.replace(fileExt, "")}_${fileExt}`.replaceAll(
-    //   " ",
-    //   "_"
-    // ),
-
     const params = {
       Bucket: process.env.AWS_BUCKET,
-      Key: fileName,
-      Body: await fs.readFileSync(filePath),
+      Key: name,
+      Body: image,
     };
 
     s3.upload(params, (err, data) => {
