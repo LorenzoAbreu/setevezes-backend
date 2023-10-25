@@ -1,37 +1,26 @@
-const puppeteer = require("puppeteer");
 const path = require("path");
 const fs = require("fs");
+const axios = require("axios");
 
 module.exports = async (url) => {
-  const browser = await puppeteer.launch({
-    headless: "new",
-    executablePath: path.join(__dirname, "src", "chromedriver.exe"),
-  });
-  const page = await browser.newPage();
-
-  await page.goto(url);
-
   let formatedUrl = new URL(url).origin.replace(/^(https?:\/\/)/, "");
   const fileName =
     formatedUrl + "_" + Math.floor(Math.random() * 99999) + ".png";
-
   const filePath = path.join(__dirname, "screenshots", fileName);
 
-  try {
-    await page.screenshot({
-      path: filePath,
-    });
-  } catch {
-    return false;
-  }
+  const response = await axios({
+    method: "post",
+    url: `https://api.apiflash.com/v1/urltoimage?access_key=889741cbb58048c8bb396f3ac6e481c1&wait_until=page_loaded&url=${url}`,
+    responseType: "arraybuffer", // to handle binary data
+  });
 
-  await browser.close();
+  const data = response.data;
 
-  const image = await fs.readFileSync(filePath).toString("base64");
+  // Write the image data to a file
+  fs.writeFileSync(filePath, data);
 
-  // try {
-  //   fs.unlinkSync(filePath);
-  // } catch {}
+  // Now you can read the image and convert it to base64 if needed
+  const image = fs.readFileSync(filePath).toString("base64");
 
   try {
     if (image.length > 5) {
