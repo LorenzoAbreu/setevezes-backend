@@ -157,4 +157,33 @@ module.exports = class OriginController {
       };
     } else return status.server_error;
   }
+
+  async Delete(owner, url) {
+    const userData = await User.findOne({
+      username: owner,
+    });
+
+    if (!userData) {
+      return status.user_not_found;
+    }
+
+    let allowedOrigins = userData.allowedOrigins || [];
+    allowedOrigins = allowedOrigins.filter((o) => o.url !== url);
+
+    const result = await User.updateOne(
+      {
+        username: owner,
+      },
+      {
+        allowedOrigins,
+      }
+    );
+
+    if (result.modifiedCount > 0) {
+      return {
+        status: 200,
+        message: "Origem deletada com sucesso!",
+      };
+    } else return status.server_error;
+  }
 };

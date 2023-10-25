@@ -33,6 +33,12 @@ router
         return res.json(status.server_error);
       });
   })
-  .put((req, res) => {});
+  .put((req, res) => {})
+  .delete((req, res) => {
+    const { url } = req.body;
+    const username = req._username;
+
+    Origin.Edit;
+  });
 
 module.exports = router;
