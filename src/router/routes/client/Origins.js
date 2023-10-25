@@ -38,7 +38,13 @@ router
     const { url } = req.body;
     const username = req._username;
 
-    Origin.Edit;
+    Origin.Delete(username, url)
+      .then((r) => {
+        return res.json(r);
+      })
+      .catch((e) => {
+        return res.json(status.server_error);
+      });
   });
 
 module.exports = router;
