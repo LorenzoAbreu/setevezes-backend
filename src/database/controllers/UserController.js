@@ -22,8 +22,8 @@ function generateApiKey() {
 }
 
 module.exports = class UserController {
-  getAll() {
-    const result = (await = User.find());
+  async getAll() {
+    const result = await User.find();
     if (result) {
       return {
         status: 200,
