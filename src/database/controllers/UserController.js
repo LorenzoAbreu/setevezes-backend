@@ -141,6 +141,7 @@ module.exports = class UserController {
       approved: checkUser.approved,
       admin: checkUser.admin,
       apiKey: checkUser.apiKey,
+      allowedOrigins: checkUser.allowedOrigins,
     };
 
     return {

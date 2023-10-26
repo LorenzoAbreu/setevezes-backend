@@ -8,11 +8,23 @@ router.route("/client/newToken").get(async (req, res) => {
     username: req._username,
   }).select("username email approved admin apiKey allowedOrigins");
 
-  console.log(userData);
+  const { username, email, approved, admin, apiKey, allowedOrigins } = userData;
+
+  const data = {
+    username,
+    email,
+    approved,
+    admin,
+    apiKey,
+    allowedOrigins,
+  };
+
+  const newToken = await jwt.sign(data);
+  console.log(newToken);
 
   return res.json({
     status: 200,
-    token: await jwt.sign(userData),
+    token: newToken,
   });
 });
 
