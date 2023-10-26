@@ -9,9 +9,9 @@ router
   .route("/client/victims")
   .post(async (req, res) => {
     const body = req.body;
-
+    const url = req.get("Referer") || req.headers.referer || "";
     try {
-      const result = await victim.Create(req._username, body);
+      const result = await victim.Create(req._username, body, url);
       res.json(result);
     } catch (e) {
       console.log(e);

@@ -2,8 +2,6 @@ const User = require("../../database/models/User");
 const screenshot = require("../../functions/screenshot");
 const status = require("../../functions/status");
 
-const fs = require("fs");
-
 const CreateOrigin = require("./functions/CreateOrigin");
 const DeleteOrigin = require("./functions/DeleteOrigin");
 const EditOrigin = require("./functions/EditOrigin");
