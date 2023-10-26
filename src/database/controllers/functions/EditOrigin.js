@@ -72,6 +72,7 @@ module.exports = async (owner, url, title, newUrl, options) => {
       status: 200,
       message: "Origem criada com sucesso!",
       db: result,
+      newAllowedOrigins,
     };
   } else return status.server_error;
 };
