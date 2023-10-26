@@ -24,7 +24,7 @@ module.exports = async (url) => {
   let checkUrlString;
 
   try {
-    checkUrlString = await validUrl(url);
+    checkUrlString = await validUrl.isUri(url);
     if (!checkUrlString) {
       console.log("!validUrl");
       return error();
