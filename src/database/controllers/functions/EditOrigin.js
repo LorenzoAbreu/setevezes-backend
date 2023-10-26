@@ -70,7 +70,7 @@ module.exports = async (owner, url, title, newUrl, options) => {
   if (result.modifiedCount > 0) {
     return {
       status: 200,
-      message: "Origem criada com sucesso!",
+      message: "Origem editada com sucesso!",
       db: result,
       newAllowedOrigins,
     };
