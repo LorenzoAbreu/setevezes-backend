@@ -30,6 +30,11 @@ const User = new mongoose.Schema({
     required: true,
     type: String,
   },
+  disabled: {
+    required: true,
+    type: Boolean,
+    default: false,
+  },
   allowedOrigins: [
     {
       title: {

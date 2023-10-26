@@ -33,6 +33,12 @@ router.all(
 );
 
 router.all(
+  "/admin/users",
+  auth.AdminAuthentication,
+  importRoute("/admin/Users.js")
+);
+
+router.all(
   "/client/origins",
   auth.Authentication,
   importRoute("/client/Origins.js")

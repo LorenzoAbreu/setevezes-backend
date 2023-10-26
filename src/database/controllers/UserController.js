@@ -22,6 +22,18 @@ function generateApiKey() {
 }
 
 module.exports = class UserController {
+  getAll() {
+    const result = (await = User.find());
+    if (result) {
+      return {
+        status: 200,
+        users: result,
+      };
+    } else {
+      return status.server_error;
+    }
+  }
+
   async Edit(username, userData) {
     const {
       username: newUsername,
@@ -141,7 +153,6 @@ module.exports = class UserController {
       approved: checkUser.approved,
       admin: checkUser.admin,
       apiKey: checkUser.apiKey,
-      allowedOrigins: checkUser.allowedOrigins,
     };
 
     return {
