@@ -13,7 +13,8 @@ router
     try {
       const result = await victim.Create(req._username, body);
       res.json(result);
-    } catch {
+    } catch (e) {
+      console.log(e);
       return res.json(status.server_error);
     }
   })

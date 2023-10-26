@@ -1,5 +1,7 @@
 const Victim = require("../models/Victim");
 const status = require("../../functions/status");
+const User = require("../models/User");
+const getHostname = require("../../functions/getHostname");
 
 module.exports = class VictimController {
   async GetAll(owner) {
@@ -25,9 +27,23 @@ module.exports = class VictimController {
   }
 
   async Create(owner, data) {
+    const userData = await User.findOne({
+      username: owner,
+    });
+
+    const allowedOrigins = userData.allowedOrigins || [];
+
+    if (!allowedOrigins.find((o) => o.hostname == getHostname(data.url))) {
+      return {
+        status: 403,
+        error: "Esta origem não tem permissão para fazer isso.",
+      };
+    }
+
     const newVictim = new Victim({
       owner,
       data,
+      url: data.url,
     });
 
     try {
