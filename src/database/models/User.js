@@ -44,9 +44,6 @@ const User = new mongoose.Schema({
       status: {
         type: Boolean,
       },
-      screenshot: {
-        type: String,
-      },
       options: {
         pgbrasil: Boolean,
         pgcelular: Boolean,

@@ -1,8 +1,6 @@
 const User = require("../../models/User");
 const status = require("../../../functions/status");
 
-const deleteImage = require("../../../functions/aws/deleteImage");
-
 module.exports = async (owner, url) => {
   const userData = await User.findOne({
     username: owner,
@@ -34,12 +32,6 @@ module.exports = async (owner, url) => {
   );
 
   if (result.modifiedCount > 0) {
-    try {
-      await deleteImage(checkOrigin.screenshot);
-    } catch {
-      console.log("Erro ao deletar imagem do banco dedados");
-    }
-
     return {
       status: 200,
       message: "Origem deletada com sucesso!",

@@ -1,5 +1,4 @@
 const User = require("../../database/models/User");
-const screenshot = require("../../functions/screenshot");
 const status = require("../../functions/status");
 
 const CreateOrigin = require("./functions/CreateOrigin");

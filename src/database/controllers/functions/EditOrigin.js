@@ -1,11 +1,6 @@
 const verifyUrl = require("../../../functions/verifyUrl");
 const status = require("../../../functions/status");
 const User = require("../../models/User");
-const screenshot = require("../../../functions/screenshot");
-const getHostname = require("../../../functions/getHostname");
-
-const uploadImage = require("../../../functions/aws/uploadImage");
-const deleteImage = require("../../../functions/aws/deleteImage");
 
 module.exports = async (owner, url, title, newUrl, options) => {
   const userData = await User.findOne({
@@ -37,7 +32,6 @@ module.exports = async (owner, url, title, newUrl, options) => {
   }
 
   let hostname = new URL(url).origin.replace(/^(https?:\/\/)/, "");
-  let printUrl = checkOrigin.screenshot;
 
   if (title != checkOrigin.title) {
     const checkTitle = allowedOrigins.find((o) => o.title === title);
@@ -49,22 +43,6 @@ module.exports = async (owner, url, title, newUrl, options) => {
     console.log("é diferente!");
     const checkUrl = allowedOrigins.find((o) => o.url === newUrl);
     if (checkUrl) return status.url_already_been_created;
-
-    const print = await screenshot(newUrl);
-
-    if (!print) {
-      console.log("Erro na print");
-      return status.server_error;
-    }
-
-    printUrl = await uploadImage(print.image, print.name);
-
-    if (!printUrl) {
-      console.log("!printUrl");
-      return status.server_error;
-    }
-
-    await deleteImage(checkOrigin.screenshot);
   }
 
   allowedOrigins = allowedOrigins.filter((o) => o.url !== url);
@@ -76,7 +54,6 @@ module.exports = async (owner, url, title, newUrl, options) => {
       url: newUrl,
       hostname,
       status: true,
-      screenshot: printUrl,
       options,
     },
   ];

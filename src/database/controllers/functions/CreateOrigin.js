@@ -1,10 +1,7 @@
 const verifyUrl = require("../../../functions/verifyUrl");
 const status = require("../../../functions/status");
 const User = require("../../models/User");
-const screenshot = require("../../../functions/screenshot");
 const getHostname = require("../../../functions/getHostname");
-
-const uploadImage = require("../../../functions/aws/uploadImage");
 
 module.exports = async (owner, title, url, options) => {
   const userData = await User.findOne({
@@ -35,23 +32,9 @@ module.exports = async (owner, title, url, options) => {
   const checkUrl = allowedOrigins.find((o) => o.url === url);
   if (checkUrl) return status.url_already_been_created;
 
-  const print = await screenshot(url);
-
-  if (!print) {
-    console.log("Erro na print");
-    return status.server_error;
-  }
-
-  const printUrl = await uploadImage(print.image, print.name);
-
-  if (!printUrl) {
-    console.log("!printUrl");
-    return status.server_error;
-  }
-
   const newAllowedOrigins = [
     ...allowedOrigins,
-    { title, url, hostname, status: true, screenshot: printUrl, options },
+    { title, url, hostname, status: true, options },
   ];
 
   const result = await User.updateOne(
