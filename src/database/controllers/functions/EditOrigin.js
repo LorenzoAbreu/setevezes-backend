@@ -39,14 +39,18 @@ module.exports = async (owner, url, title, newUrl, options) => {
   let hostname = new URL(url).origin.replace(/^(https?:\/\/)/, "");
   let printUrl = checkOrigin.screenshot;
 
-  if (url != newUrl) {
+  if (title != checkOrigin.title) {
     const checkTitle = allowedOrigins.find((o) => o.title === title);
-    if (checkTitle) return status.sitename_already_been_used_by_you;
+    if (checkTitle && checkTitle.title != checkOrigin.title)
+      return status.sitename_already_been_used_by_you;
+  }
 
+  if (url != newUrl) {
+    console.log("é diferente!");
     const checkUrl = allowedOrigins.find((o) => o.url === newUrl);
     if (checkUrl) return status.url_already_been_created;
 
-    const print = await screenshot(url);
+    const print = await screenshot(newUrl);
 
     if (!print) {
       console.log("Erro na print");
@@ -54,12 +58,6 @@ module.exports = async (owner, url, title, newUrl, options) => {
     }
 
     printUrl = await uploadImage(print.image, print.name);
-
-    try {
-      fs.unlinkSync(print.filePath);
-    } catch {
-      console.log("Erro ao deletar print");
-    }
 
     if (!printUrl) {
       console.log("!printUrl");

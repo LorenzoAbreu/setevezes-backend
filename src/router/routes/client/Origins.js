@@ -50,6 +50,10 @@ router
   })
   .put((req, res) => {
     const { url, title, newUrl, options } = req.body;
+    console.log({
+      url,
+      newUrl,
+    });
 
     const pg1 = options.pgbrasil;
     const pg2 = options.pgcelular;

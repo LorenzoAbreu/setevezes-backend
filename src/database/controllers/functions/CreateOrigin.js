@@ -44,12 +44,6 @@ module.exports = async (owner, title, url, options) => {
 
   const printUrl = await uploadImage(print.image, print.name);
 
-  try {
-    fs.unlinkSync(print.filePath);
-  } catch {
-    console.log("Erro ao deletar print");
-  }
-
   if (!printUrl) {
     console.log("!printUrl");
     return status.server_error;
