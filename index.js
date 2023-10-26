@@ -26,6 +26,13 @@ app.use(
     credentials: true,
   })
 );
+app.options(
+  "*",
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 
 app.use(require("./src/router/index"));
 
