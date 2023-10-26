@@ -35,6 +35,8 @@ module.exports = async (owner, url) => {
     return {
       status: 200,
       message: "Origem deletada com sucesso!",
+      db: result,
+      newAllowedOrigins: allowedOrigins,
     };
   } else {
     console.log(result);
