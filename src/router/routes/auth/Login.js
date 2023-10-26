@@ -9,14 +9,9 @@ router.post("/auth/login", async (req, res) => {
   try {
     const result = await User.Login(username, password);
 
-    if (result.status == 200) {
-      return res.json(result);
-    } else {
-      const { username, password } = req.body.data;
-      const newResult = await User.Login(username, password);
-      return res.json(newResult);
-    }
-  } catch {
+    return res.json(result);
+  } catch (e) {
+    console.log(e);
     res.json(status.server_error);
   }
 });

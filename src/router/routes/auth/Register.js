@@ -12,6 +12,7 @@ router.post("/auth/register", async (req, res) => {
 
     return res.json(result);
   } catch (e) {
+    console.log(e);
     return res.json({
       status: 500,
       error: "Erro no servidor!",
