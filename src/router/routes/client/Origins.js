@@ -51,7 +51,15 @@ router
   .put((req, res) => {
     const { url, title, newUrl, options } = req.body;
 
-    if (!options.pgbrasil || !options.pgcelular || !options.pgsegura) {
+    const pg1 = options.pgbrasil;
+    const pg2 = options.pgcelular;
+    const pg3 = options.pgsegura;
+
+    if (
+      (pg1 !== true && pg1 !== false) ||
+      (pg2 !== true && pg2 !== false) ||
+      (pg3 !== true && pg3 !== false)
+    ) {
       console.log("TÁ FALTANDO AS OPTIONS");
       return res.json(status.fill_all_fields);
     }
