@@ -18,6 +18,8 @@ const importRoute = (FileName) => {
   return require("./routes/" + fileName + ".js");
 };
 
+router.all("/client/me", auth.Authentication, importRoute("/client/Me.js"));
+
 router.all(
   "/admin/users/:username",
   auth.AdminAuthentication,
