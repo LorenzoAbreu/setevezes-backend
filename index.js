@@ -22,7 +22,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: ["*", "7ntc.vercel.app"],
+    origin: "*",
     credentials: true,
   })
 );
