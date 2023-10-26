@@ -4,28 +4,47 @@ const status = require("./status");
 const getHostname = require("./getHostname");
 
 module.exports = async (url) => {
-  if (url.length < 4) {
+  const error = () => {
     return {
       status: status.invalid_email.status,
       error: "URL inválida!",
     };
+  };
+
+  try {
+    if (url.length < 4) return error();
+  } catch {
+    return error();
   }
 
   let hostname = getHostname(url);
 
-  if (!hostname) {
-    return {
-      status: status.invalid_email.status,
-      error: "URL inválida!",
-    };
+  if (!hostname) return error();
+
+  let checkUrlString;
+
+  try {
+    checkUrlString = await validUrl(url);
+    if (!checkUrlString) {
+      console.log("!validUrl");
+      return error();
+    }
+  } catch (e) {
+    console.log(e);
+    return error();
   }
 
-  const checkUrlStatus = await isOnline(url);
-  if (!checkUrlStatus) {
-    return {
-      status: status.invalid_email.status,
-      error: "URL indisponível!",
-    };
+  let checkUrlStatus;
+
+  try {
+    checkUrlStatus = await isOnline(url);
+    if (!checkUrlStatus) {
+      console.log("!isOnline");
+      return error();
+    }
+  } catch (e) {
+    console.log(e);
+    return error();
   }
 
   return true;
