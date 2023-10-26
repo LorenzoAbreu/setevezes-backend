@@ -19,7 +19,7 @@ module.exports = class OriginController {
     }
 
     console.log(userData);
-    return userData.allowedOrigins;
+    return userData.allowedOrigins || [];
   }
 
   async Edit(owner, url, title, newUrl, options) {

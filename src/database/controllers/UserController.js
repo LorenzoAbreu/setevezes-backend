@@ -96,6 +96,7 @@ module.exports = class UserController {
       approved: false,
       admin: false,
       apiKey: await generateApiKey(),
+      allowedOrigins: [],
     };
 
     const newUser = new User({
