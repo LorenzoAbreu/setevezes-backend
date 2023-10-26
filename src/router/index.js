@@ -21,6 +21,12 @@ const importRoute = (FileName) => {
 router.all("/client/me", auth.Authentication, importRoute("/client/Me.js"));
 
 router.all(
+  "/client/newToken",
+  auth.Authentication,
+  importRoute("/client/newToken.js")
+);
+
+router.all(
   "/admin/users/:username",
   auth.AdminAuthentication,
   importRoute("/admin/Users.js")
