@@ -2,17 +2,16 @@ const router = require("express").Router();
 const User = require("../../../database/models/User");
 
 router.route("/client/me").get(async (req, res) => {
-  console.log(req._username);
-  const userData = await User.findOne({
-    username: req._username,
-  }).select("username email approved admin apiKey allowedOrigins");
+    const userData = await User.findOne({
+        username: req._username,
+    }).select("username email approved admin apiKey allowedOrigins -_id");
 
-  console.log(userData);
+    console.log(userData);
 
-  return res.json({
-    status: 200,
-    userData,
-  });
+    return res.json({
+        status: 200,
+        userData,
+    });
 });
 
 module.exports = router;
