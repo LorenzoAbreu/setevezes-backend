@@ -13,7 +13,6 @@ router
             url,
             body,
         });
-        if (!body.data) return res.json(status.fill_all_fields);
         try {
             const result = await victim.Create(req._username, body, url);
             res.json(result);
