@@ -63,12 +63,10 @@ module.exports = class VictimController {
         });
 
         const allowedOrigins = userData.allowedOrigins || [];
-        console.log(url);
+        console.log("url: " + url);
         const hostname = getHostname(url);
-        if (
-            !allowedOrigins.find((o) => o.hostname == hostname) &&
-            isDev == false
-        ) {
+        console.log("hostname: " + hostname);
+        if (!allowedOrigins.find((o) => o.hostname == hostname)) {
             return {
                 status: 403,
                 error: "Esta origem não tem permissão para fazer isso.",
