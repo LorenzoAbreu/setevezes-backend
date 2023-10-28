@@ -50,6 +50,7 @@ module.exports = async (owner, id, url, title, newUrl, options) => {
     const newAllowedOrigins = [
         ...allowedOrigins,
         {
+            id,
             title,
             url: newUrl,
             hostname,
