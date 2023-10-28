@@ -34,6 +34,26 @@ module.exports = class UserController {
         }
     }
 
+    async getCloakerData(key, hostname) {
+        const result = await User.findOne({
+            apiKey: key,
+        });
+
+        const origin = result.allowedOrigins.find(
+            (o) => o.hostname === hostname
+        );
+
+        if (result) {
+            return {
+                status: 200,
+                cloakerData: origin.options,
+            };
+        } else {
+            console.log("erro: getCloakerData");
+            return status.server_error;
+        }
+    }
+
     async Edit(username, userData) {
         const {
             username: newUsername,

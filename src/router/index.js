@@ -21,6 +21,12 @@ const importRoute = (FileName) => {
 router.all("/client/me", auth.Authentication, importRoute("/client/Me.js"));
 
 router.all(
+    "/client/getCloakerData",
+    auth.ApiKeyAuthentication,
+    importRoute("/client/getCloakerData.js")
+);
+
+router.all(
     "/client/newToken",
     auth.Authentication,
     importRoute("/client/newToken.js")
