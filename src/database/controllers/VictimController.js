@@ -28,6 +28,12 @@ module.exports = class VictimController {
     }
 
     async Create(owner, data, url) {
+        try {
+            if (JSON.stringify(data).length < 2) return status.fill_all_fields;
+        } catch {
+            return status.fill_all_fields;
+        }
+
         const userData = await User.findOne({
             username: owner,
         });
