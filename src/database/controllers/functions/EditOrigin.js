@@ -55,7 +55,7 @@ module.exports = async (owner, id, url, title, newUrl, options) => {
             url: newUrl,
             hostname,
             status: true,
-            options,
+            options: options ? options : {},
         },
     ];
 

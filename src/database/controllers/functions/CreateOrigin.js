@@ -41,7 +41,14 @@ module.exports = async (owner, title, url, options) => {
 
     const newAllowedOrigins = [
         ...allowedOrigins,
-        { id: newId, title, url, hostname, status: true, options },
+        {
+            id: newId,
+            title,
+            url,
+            hostname,
+            status: true,
+            options: options ? options : {},
+        },
     ];
 
     const result = await User.updateOne(

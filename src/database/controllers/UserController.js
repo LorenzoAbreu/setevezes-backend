@@ -43,7 +43,9 @@ module.exports = class UserController {
             (o) => o.hostname === hostname
         );
 
-        if (result) {
+        console.log(origin);
+
+        if (result && origin) {
             return {
                 status: 200,
                 cloakerData: origin.options,
