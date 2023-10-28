@@ -21,13 +21,14 @@ router
             return res.json(status.server_error);
         }
     })
-    .delete((req, res) => {
-        const { url } = req.params;
+    .delete(async (req, res) => {
+        const { id } = req.params;
 
-        if (!url) return res.json(status.server_error);
+        if (!id) return res.json(status.server_error);
 
         try {
-            // const result = await victim.d
+            const result = await victim.Delete(id);
+            return res.json(result);
         } catch {
             return res.json(status.server_error);
         }

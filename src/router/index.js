@@ -3,57 +3,63 @@ const AuthController = require("../database/controllers/AuthController");
 const auth = new AuthController();
 
 router.all("/", (req, res) => {
-  res.send("Oi");
+    res.send("Oi");
 });
 
 const importRoute = (FileName) => {
-  let fileName = FileName;
+    let fileName = FileName;
 
-  if (fileName.startsWith("/")) {
-    fileName = fileName.replace("/", "");
-  }
+    if (fileName.startsWith("/")) {
+        fileName = fileName.replace("/", "");
+    }
 
-  fileName = fileName.replace(".js", "");
+    fileName = fileName.replace(".js", "");
 
-  return require("./routes/" + fileName + ".js");
+    return require("./routes/" + fileName + ".js");
 };
 
 router.all("/client/me", auth.Authentication, importRoute("/client/Me.js"));
 
 router.all(
-  "/client/newToken",
-  auth.Authentication,
-  importRoute("/client/newToken.js")
+    "/client/newToken",
+    auth.Authentication,
+    importRoute("/client/newToken.js")
 );
 
 router.all(
-  "/admin/users/:username",
-  auth.AdminAuthentication,
-  importRoute("/admin/Users.js")
+    "/admin/users/:username",
+    auth.AdminAuthentication,
+    importRoute("/admin/Users.js")
 );
 
 router.all(
-  "/admin/users",
-  auth.AdminAuthentication,
-  importRoute("/admin/Users.js")
+    "/admin/users",
+    auth.AdminAuthentication,
+    importRoute("/admin/Users.js")
 );
 
 router.all(
-  "/client/origins",
-  auth.Authentication,
-  importRoute("/client/Origins.js")
+    "/client/origins",
+    auth.Authentication,
+    importRoute("/client/Origins.js")
 );
 
 router.post(
-  "/client/victims",
-  auth.ApiKeyAuthentication,
-  importRoute("/client/Victims.js")
+    "/client/victims",
+    auth.ApiKeyAuthentication,
+    importRoute("/client/Victims.js")
 );
 
 router.get(
-  "/client/victims",
-  auth.Authentication,
-  importRoute("/client/Victims.js")
+    "/client/victims",
+    auth.Authentication,
+    importRoute("/client/Victims.js")
+);
+
+router.delete(
+    "/client/victims/:id",
+    auth.Authentication,
+    importRoute("/client/Victims.js")
 );
 
 router.all("/auth/login", importRoute("/auth/Login.js"));
@@ -61,9 +67,9 @@ router.all("/auth/login", importRoute("/auth/Login.js"));
 router.all("/auth/register", importRoute("/auth/Register.js"));
 
 router.all("*", (req, res) => {
-  res.send({
-    status: 404,
-  });
+    res.send({
+        status: 404,
+    });
 });
 
 module.exports = router;
