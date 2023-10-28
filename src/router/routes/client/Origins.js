@@ -49,7 +49,7 @@ router
             });
     })
     .put((req, res) => {
-        const { url, title, newUrl, options } = req.body;
+        const { id, url, title, newUrl, options } = req.body;
         console.log({
             url,
             newUrl,
@@ -72,7 +72,7 @@ router
 
         if (!req._username) return res.json(status.user_not_found);
 
-        Origin.Edit(req._username, url, title, newUrl, options)
+        Origin.Edit(req._username, id, url, title, newUrl, options)
             .then((r) => {
                 return res.json(r);
             })

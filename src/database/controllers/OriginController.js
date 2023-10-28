@@ -19,8 +19,8 @@ module.exports = class OriginController {
         return userData.allowedOrigins || [];
     }
 
-    async Edit(owner, url, title, newUrl, options) {
-        return await EditOrigin(owner, url, title, newUrl, options);
+    async Edit(owner, id, url, title, newUrl, options) {
+        return await EditOrigin(owner, id, url, title, newUrl, options);
     }
 
     async Create(owner, title, url, options) {
