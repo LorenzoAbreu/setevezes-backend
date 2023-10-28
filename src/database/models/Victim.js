@@ -9,7 +9,12 @@ const Victim = new mongoose.Schema({
         required: true,
         type: String,
         default:
-            "t" + genRandNumber() + "d" + genRandNumber() + "7" + genRandNumber,
+            "t" +
+            genRandNumber() +
+            "d" +
+            genRandNumber() +
+            "7" +
+            genRandNumber(),
     },
     owner: {
         required: true,
