@@ -28,9 +28,18 @@ module.exports = class VictimController {
     }
 
     async Create(owner, data, url) {
-        try {
-            if (JSON.stringify(data).length < 2) return status.fill_all_fields;
-        } catch {
+        function isEmpty(obj) {
+            try {
+                for (var prop in obj) {
+                    if (obj.hasOwnProperty(prop)) return false;
+                }
+                return JSON.stringify(obj) === JSON.stringify({});
+            } catch {
+                return true;
+            }
+        }
+
+        if (await isEmpty(data)) {
             return status.fill_all_fields;
         }
 
