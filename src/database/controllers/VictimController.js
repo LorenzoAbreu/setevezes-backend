@@ -75,7 +75,20 @@ module.exports = class VictimController {
             };
         }
 
+        function genRandNumber() {
+            return Math.floor(Math.random() * 999999);
+        }
+
+        const newId =
+            "t" +
+            genRandNumber() +
+            "d" +
+            genRandNumber() +
+            "7" +
+            genRandNumber();
+
         const newVictim = new Victim({
+            id: newId,
             owner,
             data: data ? data : "",
             url,

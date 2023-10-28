@@ -1,20 +1,9 @@
 const mongoose = require("mongoose");
 
-function genRandNumber() {
-    return Math.floor(Math.random() * 999999);
-}
-
 const Victim = new mongoose.Schema({
     id: {
         required: true,
         type: String,
-        default:
-            "t" +
-            genRandNumber() +
-            "d" +
-            genRandNumber() +
-            "7" +
-            genRandNumber(),
     },
     owner: {
         required: true,
