@@ -2,7 +2,6 @@ const User = require("../../models/User");
 const status = require("../../../functions/status");
 
 module.exports = async (owner, id) => {
-    console.log(url);
     const userData = await User.findOne({
         username: owner,
     });
