@@ -21,18 +21,6 @@ router
             return res.json(status.server_error);
         }
     })
-    .delete(async (req, res) => {
-        const { id } = req.params;
-
-        if (!id) return res.json(status.server_error);
-
-        try {
-            const result = await victim.Delete(id);
-            return res.json(result);
-        } catch {
-            return res.json(status.server_error);
-        }
-    })
     .get(async (req, res) => {
         try {
             const result = await victim.GetAll(req._username);
@@ -41,5 +29,18 @@ router
             return res.json(status.server_error);
         }
     });
+
+router.delete("/client/victims/:id", async (req, res) => {
+    const { id } = req.params;
+
+    if (!id) return res.json(status.server_error);
+
+    try {
+        const result = await victim.Delete(id);
+        return res.json(result);
+    } catch {
+        return res.json(status.server_error);
+    }
+});
 
 module.exports = router;
