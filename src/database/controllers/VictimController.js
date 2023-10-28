@@ -5,6 +5,21 @@ const getHostname = require("../../functions/getHostname");
 const { isDev } = require("../../../index");
 
 module.exports = class VictimController {
+    async Delete(id) {
+        const result = await Victim.deleteOne({
+            id,
+        });
+
+        if (result.deletedCount > 0) {
+            return {
+                status: 200,
+                message: "Vítima excluida com sucesso!",
+            };
+        } else {
+            return status.server_error;
+        }
+    }
+
     async GetAll(owner) {
         const victims = await Victim.find({
             owner,

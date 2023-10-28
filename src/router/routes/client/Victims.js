@@ -21,6 +21,17 @@ router
             return res.json(status.server_error);
         }
     })
+    .delete((req, res) => {
+        const { url } = req.params;
+
+        if (!url) return res.json(status.server_error);
+
+        try {
+            // const result = await victim.d
+        } catch {
+            return res.json(status.server_error);
+        }
+    })
     .get(async (req, res) => {
         try {
             const result = await victim.GetAll(req._username);
