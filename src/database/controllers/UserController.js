@@ -43,7 +43,7 @@ module.exports = class UserController {
             (o) => o.hostname === hostname
         );
 
-        console.log(origin);
+        console.log({ origin, hostname, result });
 
         if (result && origin) {
             return {
@@ -52,7 +52,10 @@ module.exports = class UserController {
             };
         } else {
             console.log("erro: getCloakerData");
-            return status.server_error;
+            return {
+                status: 403,
+                error: "Esta origem não tem permissão para fazer isso.",
+            };
         }
     }
 
