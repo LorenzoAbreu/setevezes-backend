@@ -56,6 +56,7 @@ const User = new mongoose.Schema({
                 pgbrasil: Boolean,
                 pgcelular: Boolean,
                 pgsegura: Boolean,
+                pgautocapture: Boolean,
             },
         },
     ],
