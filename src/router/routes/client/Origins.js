@@ -23,13 +23,15 @@ router
         const pg1 = options.pgbrasil;
         const pg2 = options.pgcelular;
         const pg3 = options.pgsegura;
+        const pg4 = options.pgautocapture;
 
         console.log(options);
 
         if (
             (pg1 != true && pg1 != false) ||
             (pg2 != true && pg2 != false) ||
-            (pg3 != true && pg3 != false)
+            (pg3 != true && pg3 != false) ||
+            (pg4 != true && pg4 != false)
         ) {
             console.log("TÁ FALTANDO AS OPTIONS");
             return res.json(status.fill_all_fields);
@@ -58,11 +60,13 @@ router
         const pg1 = options.pgbrasil;
         const pg2 = options.pgcelular;
         const pg3 = options.pgsegura;
+        const pg4 = options.pgautocapture;
 
         if (
             (pg1 !== true && pg1 !== false) ||
             (pg2 !== true && pg2 !== false) ||
-            (pg3 !== true && pg3 !== false)
+            (pg3 !== true && pg3 !== false) ||
+            (pg4 !== true && pg4 !== false)
         ) {
             console.log("TÁ FALTANDO AS OPTIONS");
             return res.json(status.fill_all_fields);
