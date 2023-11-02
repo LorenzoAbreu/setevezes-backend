@@ -56,6 +56,8 @@ const User = new mongoose.Schema({
                 pgbrasil: Boolean,
                 pgcelular: Boolean,
                 pgsegura: Boolean,
+                pgredirect_on: Boolean,
+                pgredirect_url: String,
                 pgautocapture: Boolean,
             },
         },

@@ -25,13 +25,17 @@ router
         const pg3 = options.pgsegura;
         const pg4 = options.pgautocapture;
 
+        const pg5 = options.pgredirect_on;
+        const pg6 = options.pgredirect_url;
+
         console.log(options);
 
         if (
             (pg1 != true && pg1 != false) ||
             (pg2 != true && pg2 != false) ||
             (pg3 != true && pg3 != false) ||
-            (pg4 != true && pg4 != false)
+            (pg4 != true && pg4 != false) ||
+            (pg5 != true && pg5 != false)
         ) {
             console.log("TÁ FALTANDO AS OPTIONS");
             return res.json(status.fill_all_fields);
@@ -62,11 +66,15 @@ router
         const pg3 = options.pgsegura;
         const pg4 = options.pgautocapture;
 
+        const pg5 = options.pgredirect_on;
+        const pg6 = options.pgredirect_url;
+
         if (
             (pg1 !== true && pg1 !== false) ||
             (pg2 !== true && pg2 !== false) ||
             (pg3 !== true && pg3 !== false) ||
-            (pg4 !== true && pg4 !== false)
+            (pg4 !== true && pg4 !== false) ||
+            (pg5 != true && pg5 != false)
         ) {
             console.log("TÁ FALTANDO AS OPTIONS");
             return res.json(status.fill_all_fields);
