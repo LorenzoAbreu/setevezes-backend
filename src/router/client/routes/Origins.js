@@ -2,6 +2,7 @@ const router = require("express").Router();
 const OriginController = require("../../../database/controllers/OriginController");
 const status = require("../../../functions/status");
 const Origin = new OriginController();
+const json = require("../../../functions/json");
 
 router
     .route("/client/origins")
@@ -25,10 +26,7 @@ router
         const pg3 = options.pgsegura;
         const pg4 = options.pgautocapture;
 
-        const pg5 = options.pgredirect_on;
-        const pg6 = options.pgredirect_url;
-
-        console.log(options);
+        const pg5 = json.parse(options.pgredirect);
 
         if (
             (pg1 != true && pg1 != false) ||
