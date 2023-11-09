@@ -4,7 +4,7 @@ const User = require("../../../database/models/User");
 router.route("/client/me").get(async (req, res) => {
     const userData = await User.findOne({
         username: req._username,
-    }).select("username email approved admin apiKey allowedOrigins -_id");
+    }).select("username email approved admin apiKey -_id");
 
     console.log(userData);
 

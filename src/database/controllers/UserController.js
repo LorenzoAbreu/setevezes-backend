@@ -22,107 +22,33 @@ function generateApiKey() {
 }
 
 module.exports = class UserController {
+    async get({ username, apiKey, email }) {
+        return await User.findOne({
+            $or: [{ apiKey }, { username }, { email }],
+        });
+    }
+
     async getAll() {
-        const result = await User.find();
-        if (result) {
-            return {
-                status: 200,
-                users: result,
-            };
-        } else {
-            return status.server_error;
-        }
+        return await User.find();
     }
 
     async getCloakerData(key, hostname) {
-        const result = await User.findOne({
-            apiKey: key,
-        });
+        const userData = await this.get({ apiKey: key });
 
-        const origin = result.allowedOrigins.find(
+        const origin = userData.allowedOrigins.find(
             (o) => o.hostname === hostname
         );
 
-        console.log({ origin, hostname, result });
-
-        if (result && origin) {
-            return {
-                status: 200,
-                cloakerData: origin.options,
-            };
-        } else {
-            console.log("erro: getCloakerData");
-            return {
-                status: 403,
-                error: "Esta origem não tem permissão para fazer isso.",
-            };
-        }
+        return origin.options;
     }
 
-    async Edit(username, userData) {
-        const {
-            username: newUsername,
-            email: newEmail,
-            password: newPassword,
-            admin: newAdminStatus,
-            approved: newApprovedStatus,
-        } = userData;
+    async create(username, email, password) {
+        const checkUser = await this.get({ username });
+        const checkEmail = await this.get({ email });
 
-        if (
-            !newUsername &&
-            !newEmail &&
-            !newPassword &&
-            !newAdminStatus &&
-            !newApprovedStatus
-        ) {
-            return status.fill_all_fields;
-        }
-
-        if (!username) return status.user_not_found;
-
-        const checkUser = await User.findOne({
-            username,
-        });
-
-        if (!checkUser) return status.user_not_found;
-
-        const result = await User.updateOne(
-            {
-                username,
-            },
-            {
-                username: newUsername,
-                email: newEmail,
-                password: newPassword,
-                admin: newAdminStatus,
-                approved: newApprovedStatus,
-            }
-        );
-
-        if (result.modifiedCount > 0) {
-            return { status: 200, message: "Usuário editado com sucesso!" };
-        } else return status.server_error;
-    }
-
-    async Create(username, email, password) {
-        const checkUser = await User.findOne({ username });
-        const checkEmail = await User.findOne({ email });
-
-        if (!username || !email || !password) {
-            return status.fill_all_fields;
-        }
-
-        if (checkUser) {
-            return status.user_already_been_used;
-        }
-
-        if (!EmailValidator.validate(email)) {
-            return status.invalid_email;
-        }
-
-        if (checkEmail) {
-            return status.email_already_been_used;
-        }
+        if (checkUser) return status.user_already_been_used;
+        if (!EmailValidator.validate(email)) return status.invalid_email;
+        if (checkEmail) return status.email_already_been_used;
 
         const newUserData = {
             username,
@@ -130,33 +56,24 @@ module.exports = class UserController {
             approved: false,
             admin: false,
             apiKey: await generateApiKey(),
-            allowedOrigins: [],
         };
 
         const newUser = new User({
             ...newUserData,
+            allowedOrigins: [],
             password,
         });
 
         const result = await newUser.save();
 
-        if (result.username) {
-            return {
-                status: 200,
-                token: await jwt.sign(newUserData),
-                apiKey: newUserData.apiKey,
-                message: "Seja muito bem-vindo, " + username + "!",
-            };
-        } else {
-            return status.server_error;
-        }
+        return {
+            result,
+            token: await jwt.sign(newUserData),
+            apiKey: newUserData.apiKey,
+        };
     }
 
-    async Login(username, password) {
-        if (!username || !password) {
-            return status.fill_all_fields;
-        }
-
+    async login(username, password) {
         const checkUser = await User.findOne({
             username,
         }).select("username password approved admin apiKey email");

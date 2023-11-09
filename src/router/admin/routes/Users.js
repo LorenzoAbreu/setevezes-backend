@@ -6,13 +6,13 @@ const UserController = require("../../../database/controllers/UserController");
 const user = new UserController();
 
 router.route("/admin/users/:username").put(async (req, res) => {
-  const result = await user.Edit(req.params.username, req.body);
-  res.json(result);
+    const result = await user.Edit(req.params.username, req.body);
+    res.json(result);
 });
 
 router.get("/admin/users", async (req, res) => {
-  const result = await user.getAll();
-  return res.json(result);
+    const result = await user.getAll();
+    return res.json(result);
 });
 
 module.exports = router;

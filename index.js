@@ -33,7 +33,8 @@ app.use(
     })
 );
 
-app.use(require("./src/router/index"));
+//router
+app.use(require("./src/router/index").router);
 
 connect.then(() => {
     console.log("Banco de dados conectado com sucesso!");

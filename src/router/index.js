@@ -1,12 +1,14 @@
 const router = require("express").Router();
-const AuthController = require("../database/controllers/AuthController");
-const auth = new AuthController();
 
 router.all("/", (req, res) => {
-    res.send("Oi");
+    res.json({ port: process.env.PORT });
 });
 
-const importRoute = (FileName) => {
+router.use(require("./auth/index"));
+router.use(require("./client/index"));
+router.use(require("./admin/index"));
+
+function importRoute(FileName) {
     let fileName = FileName;
 
     if (fileName.startsWith("/")) {
@@ -16,66 +18,9 @@ const importRoute = (FileName) => {
     fileName = fileName.replace(".js", "");
 
     return require("./routes/" + fileName + ".js");
+}
+
+module.exports = {
+    router,
+    importRoute,
 };
-
-router.all("/client/me", auth.Authentication, importRoute("/client/Me.js"));
-
-router.all(
-    "/client/getCloakerData",
-    auth.ApiKeyAuthentication,
-    importRoute("/client/getCloakerData.js")
-);
-
-router.all(
-    "/client/newToken",
-    auth.Authentication,
-    importRoute("/client/newToken.js")
-);
-
-router.all(
-    "/admin/users/:username",
-    auth.AdminAuthentication,
-    importRoute("/admin/Users.js")
-);
-
-router.all(
-    "/admin/users",
-    auth.AdminAuthentication,
-    importRoute("/admin/Users.js")
-);
-
-router.all(
-    "/client/origins",
-    auth.Authentication,
-    importRoute("/client/Origins.js")
-);
-
-router.post(
-    "/client/victims",
-    auth.ApiKeyAuthentication,
-    importRoute("/client/Victims.js")
-);
-
-router.get(
-    "/client/victims",
-    auth.Authentication,
-    importRoute("/client/Victims.js")
-);
-
-router.delete(
-    "/client/victims/:id",
-    auth.Authentication,
-    importRoute("/client/Victims.js")
-);
-
-router.all("/auth/login", importRoute("/auth/Login.js"));
-
-router.all("/auth/register", importRoute("/auth/Register.js"));
-
-router.all("*", (req, res) => {
-    res.send({
-        status: 404,
-    });
-});
-
-module.exports = router;

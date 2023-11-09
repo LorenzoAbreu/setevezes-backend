@@ -1,11 +1,11 @@
 const Victim = require("../models/Victim");
 const status = require("../../functions/status");
-const User = require("../models/User");
+const UserController = require("./UserController");
 const getHostname = require("../../functions/getHostname");
-const { isDev } = require("../../../index");
+const user = new UserController();
 
 module.exports = class VictimController {
-    async Delete(id) {
+    async delete(id) {
         const result = await Victim.deleteOne({
             id,
         });
@@ -58,7 +58,7 @@ module.exports = class VictimController {
             return status.fill_all_fields;
         }
 
-        const userData = await User.findOne({
+        const userData = await user.get({
             username: owner,
         });
 
