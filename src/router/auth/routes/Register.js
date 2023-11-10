@@ -6,8 +6,12 @@ const User = new UserController();
 router.post("/auth/register", async (req, res) => {
     const { username, email, password } = req.body;
 
-    if (!username || !email || !password)
+    console.log("/auth/register");
+
+    if (!username || !email || !password) {
+        console.log(status.fill_all_fields);
         return res.json(status.fill_all_fields);
+    }
 
     try {
         const result = await User.create(username, email, password);
