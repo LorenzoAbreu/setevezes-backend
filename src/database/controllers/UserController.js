@@ -68,7 +68,12 @@ module.exports = class UserController {
 
         return {
             status: 200,
-            result,
+            result: {
+                username: result.username,
+                email: result.email,
+                approved: result.approved,
+                admin: result.admin,
+            },
             token: await jwt.sign(newUserData),
             apiKey: newUserData.apiKey,
         };
