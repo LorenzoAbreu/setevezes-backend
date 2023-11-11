@@ -67,6 +67,7 @@ module.exports = class UserController {
         const result = await newUser.save();
 
         return {
+            status: 200,
             result,
             token: await jwt.sign(newUserData),
             apiKey: newUserData.apiKey,
