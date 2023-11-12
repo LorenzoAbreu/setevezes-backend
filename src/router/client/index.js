@@ -20,10 +20,4 @@ router.delete(
     require("./routes/Victims")
 );
 
-router.all("*", (req, res) => {
-    res.send({
-        status: 404,
-    });
-});
-
 module.exports = router;

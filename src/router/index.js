@@ -8,19 +8,12 @@ router.use(require("./auth/index"));
 router.use(require("./client/index"));
 router.use(require("./admin/index"));
 
-function importRoute(FileName) {
-    let fileName = FileName;
-
-    if (fileName.startsWith("/")) {
-        fileName = fileName.replace("/", "");
-    }
-
-    fileName = fileName.replace(".js", "");
-
-    return require("./routes/" + fileName + ".js");
-}
+router.all("*", (req, res) => {
+    res.send({
+        status: 404,
+    });
+});
 
 module.exports = {
     router,
-    importRoute,
 };

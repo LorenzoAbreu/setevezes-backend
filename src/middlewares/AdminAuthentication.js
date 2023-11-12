@@ -5,7 +5,7 @@ const UserController = require("../database/controllers/UserController");
 module.exports = async function AdminAuthentication(req, res, next) {
     const Authorization = req.headers.authorization;
     const user = new UserController();
-
+    console.log("AdmAuth");
     if (Authorization && Authorization.startsWith("Bearer ")) {
         const token = Authorization.split("Bearer ")[1];
         const tokenData = await jwt.verify(token);

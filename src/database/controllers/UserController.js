@@ -29,7 +29,10 @@ module.exports = class UserController {
     }
 
     async getAll() {
-        return await User.find();
+        return {
+            status: 200,
+            users: await User.find(),
+        };
     }
 
     async getCloakerData(key, hostname) {
