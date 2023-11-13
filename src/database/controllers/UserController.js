@@ -110,4 +110,12 @@ module.exports = class UserController {
             message: "Seja muito bem-vindo, " + username + "!",
         };
     }
+
+    async getMyFakes(username) {
+        const userData = await User.findOne({
+            username,
+        });
+
+        return userData.fakes || [];
+    }
 };

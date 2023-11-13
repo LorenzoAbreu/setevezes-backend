@@ -16,7 +16,13 @@ module.exports = class OriginController {
         };
     }
 
-    async create(username, title, url, options) {
+    async create(username, title, Url, options) {
+        let url = Url;
+
+        if (!Url.startsWith("http")) {
+            url = "https://" + Url;
+        }
+
         const userData = await User.findOne({
             username,
         });
@@ -48,7 +54,7 @@ module.exports = class OriginController {
         const result = await userData.save();
 
         if (result) {
-            console.log("criou");
+            console.log("criou", result);
             return {
                 status: 200,
                 message: "Origem criada com sucesso!",

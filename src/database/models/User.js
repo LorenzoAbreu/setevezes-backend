@@ -35,6 +35,10 @@ const User = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    fakes: {
+        type: Array,
+        required: false,
+    },
     allowedOrigins: [
         {
             id: {
