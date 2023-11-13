@@ -55,6 +55,7 @@ module.exports = class VictimController {
         }
 
         if (await isEmpty(data)) {
+            console.log("vazio 1");
             return status.fill_all_fields;
         }
 

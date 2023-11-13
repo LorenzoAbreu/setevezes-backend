@@ -1,33 +1,60 @@
 const User = require("../../database/models/User");
+const getHostname = require("../../functions/getHostname");
 const status = require("../../functions/status");
-
-const CreateOrigin = require("./functions/CreateOrigin");
-const DeleteOrigin = require("./functions/DeleteOrigin");
-const EditOrigin = require("./functions/EditOrigin");
+const verifyUrl = require("../../functions/verifyUrl");
+const generateId = require("../../functions/generateId");
 
 module.exports = class OriginController {
-    async GetAll(owner) {
+    async getAll(username) {
         const userData = await User.findOne({
-            username: owner,
+            username,
         });
 
-        if (!owner || !userData) {
-            return status.user_not_found;
+        return {
+            status: 200,
+            origins: userData.allowedOrigins || [],
+        };
+    }
+
+    async create(username, title, url, options) {
+        const userData = await User.findOne({
+            username,
+        });
+        let userOrigins = userData.allowedOrigins || [];
+        const checkOrigin = userOrigins.find((o) => o.url === url);
+        const hostname = getHostname(url);
+
+        if (checkOrigin) return status.url_already_been_created;
+
+        if (!verifyUrl(url) || !hostname) {
+            return {
+                status: 401,
+                error: "URL inválida!",
+            };
         }
 
-        console.log(userData);
-        return userData.allowedOrigins || [];
-    }
+        const newOriginData = {
+            hostname,
+            url,
+            id: generateId(),
+            options,
+            status: true,
+            title,
+        };
 
-    async Edit(owner, id, url, title, newUrl, options) {
-        return await EditOrigin(owner, id, url, title, newUrl, options);
-    }
+        userOrigins.push(newOriginData);
 
-    async Create(owner, title, url, options) {
-        return await CreateOrigin(owner, title, url, options);
-    }
+        userData.allowedOrigins = userOrigins;
+        const result = await userData.save();
 
-    async Delete(owner, id) {
-        return DeleteOrigin(owner, id);
+        if (result) {
+            console.log("criou");
+            return {
+                status: 200,
+                message: "Origem criada com sucesso!",
+                newOrigin: newOriginData,
+                origins: userOrigins,
+            };
+        } else return status.server_error;
     }
 };

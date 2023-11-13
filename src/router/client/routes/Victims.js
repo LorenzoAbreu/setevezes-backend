@@ -22,10 +22,13 @@ router
         }
     })
     .get(async (req, res) => {
+        console.log("/client/victims");
         try {
             const result = await victim.GetAll(req._username);
             res.json(result);
+            console.log("victims", result);
         } catch {
+            console.log("500");
             return res.json(status.server_error);
         }
     });
