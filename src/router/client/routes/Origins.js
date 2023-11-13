@@ -19,7 +19,14 @@ router
         const result = await origin.create(req._username, title, url, options);
         return res.json(result);
     })
-    .put((req, res) => {})
-    .delete((req, res) => {});
+    .put((req, res) => {});
+
+router.route("/client/origins/:id").delete(async (req, res) => {
+    const { id } = req.params;
+    const origin = new OriginController();
+
+    const request = await origin.delete(req._username, id);
+    return res.json(request);
+});
 
 module.exports = router;

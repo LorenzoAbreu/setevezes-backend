@@ -57,4 +57,26 @@ module.exports = class OriginController {
             };
         } else return status.server_error;
     }
+
+    async delete(username, id) {
+        const userData = await User.findOne({
+            username,
+        });
+        let userOrigins = userData.allowedOrigins || [];
+        const checkOrigin = userOrigins.find((o) => o.id === id);
+
+        if (checkOrigin) {
+            userOrigins = await userOrigins.filter((o) => o.id !== id);
+
+            return {
+                status: 200,
+                newOrigins: userOrigins,
+            };
+        } else {
+            return {
+                status: 404,
+                error: "Origem não encontrada!",
+            };
+        }
+    }
 };
