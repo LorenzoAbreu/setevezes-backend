@@ -35,10 +35,21 @@ const User = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    fakes: {
-        type: Array,
-        required: false,
-    },
+    fakes: [
+        {
+            id: String,
+            options: {
+                pgbrasil: Boolean,
+                pgcelular: Boolean,
+                pgsegura: Boolean,
+                pgredirect: {
+                    on: Boolean,
+                    url: String,
+                },
+                pgautocapture: Boolean,
+            },
+        },
+    ],
     allowedOrigins: [
         {
             id: {

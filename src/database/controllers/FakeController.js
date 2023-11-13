@@ -10,15 +10,17 @@ module.exports = class FakeController {
         };
     }
 
-    async registerUser(username, fakeId) {
+    async registerUser(username, fakeId, options) {
         const fakeData = await Fake.findOne({
             id: fakeId,
         });
 
         if (!fakeData) return status.server_error;
+        console.log(fakeData);
 
         const userData = await User.findOne({ username });
         let userFakes = userData.fakes || [];
+        console.log(userFakes);
 
         if (userFakes.find((id) => id === fakeId)) {
             return {
@@ -27,7 +29,10 @@ module.exports = class FakeController {
             };
         }
 
-        userFakes.push(fakeId);
+        userFakes.push({
+            id: fakeId,
+            options,
+        });
 
         userData.fakes = userFakes;
 

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const UserController = require("../../../database/controllers/UserController");
 const User = require("../../../database/models/User");
+const jwt = require("../../../functions/jwt");
 
 router.get("/client/me/fakes", async (req, res) => {
     const user = new UserController();
@@ -17,6 +18,13 @@ router.route("/client/me").get(async (req, res) => {
 
     return res.json({
         status: 200,
+        token: await jwt.sign({
+            username: userData.user,
+            email: userData.email,
+            approved: userData.approved,
+            admin: userData.admin,
+            apiKey: userData.apiKey,
+        }),
         userData,
     });
 });
