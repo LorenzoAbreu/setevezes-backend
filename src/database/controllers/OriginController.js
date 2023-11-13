@@ -67,11 +67,19 @@ module.exports = class OriginController {
 
         if (checkOrigin) {
             userOrigins = await userOrigins.filter((o) => o.id !== id);
+            userData.allowedOrigins = userOrigins;
 
-            return {
-                status: 200,
-                newOrigins: userOrigins,
-            };
+            const result = await userData.save();
+
+            if (result) {
+                return {
+                    status: 200,
+                    newOrigins: userOrigins,
+                    message: "Origem deletada com sucesso!",
+                };
+            } else {
+                return status.server_error;
+            }
         } else {
             return {
                 status: 404,

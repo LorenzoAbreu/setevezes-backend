@@ -4,6 +4,11 @@ const ApikeyAuthentication = require("../../middlewares/ApikeyAuthentication");
 
 router.all("/client/fakes", UserAuthentication, require("./routes/Fakes"));
 router.all("/client/origins", UserAuthentication, require("./routes/Origins"));
+router.all(
+    "/client/origins/:id",
+    UserAuthentication,
+    require("./routes/Origins")
+);
 router.all("/client/me", UserAuthentication, require("./routes/Me"));
 router.all(
     "/client/getCloakerData",
