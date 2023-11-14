@@ -39,6 +39,7 @@ module.exports = class FakeController {
         if (result) {
             return {
                 status: 200,
+                fakes: userFakes,
                 message: "Fake criada com sucesso!",
             };
         } else return status.server_error;
