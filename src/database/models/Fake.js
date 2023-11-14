@@ -9,6 +9,18 @@ const Fake = new mongoose.Schema({
         type: String,
         required: true,
     },
+    aka: {
+        type: String,
+        required: true,
+    },
+    canUseUsers: {
+        type: Array,
+        required: true,
+    },
+    url: {
+        type: String,
+        required: true,
+    },
     image: {
         type: String,
         required: true,

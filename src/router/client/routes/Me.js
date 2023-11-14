@@ -13,13 +13,14 @@ router.get("/client/me/fakes", async (req, res) => {
 router.route("/client/me").get(async (req, res) => {
     const userData = await User.findOne({
         username: req._username,
-    }).select("username email approved admin apiKey -_id");
+    }).select("username email approved admin apiKey id -_id");
 
     console.log(userData);
 
     return res.json({
         status: 200,
         token: await jwt.sign({
+            id: userData.id,
             username: userData.user,
             email: userData.email,
             approved: userData.approved,

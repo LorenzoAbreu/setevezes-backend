@@ -54,6 +54,11 @@ module.exports = class UserController {
         if (checkEmail) return status.email_already_been_used;
 
         const newUserData = {
+            id:
+                "_mv25g__account_____" +
+                Math.floor(Math.random() * 999999) +
+                "_" +
+                Math.floor(Math.random() * 99999),
             username,
             email,
             approved: false,
@@ -71,12 +76,7 @@ module.exports = class UserController {
 
         return {
             status: 200,
-            result: {
-                username: result.username,
-                email: result.email,
-                approved: result.approved,
-                admin: result.admin,
-            },
+            result: newUserData,
             token: await jwt.sign(newUserData),
             apiKey: newUserData.apiKey,
         };
@@ -85,7 +85,7 @@ module.exports = class UserController {
     async login(username, password) {
         const checkUser = await User.findOne({
             username,
-        }).select("username password approved admin apiKey email");
+        }).select("id username password approved admin apiKey email");
 
         if (!checkUser || password != checkUser.password) {
             return status.invalid_login_data;
@@ -96,6 +96,7 @@ module.exports = class UserController {
         }
 
         const userData = {
+            id: checkUser.id,
             username,
             email: checkUser.email,
             approved: checkUser.approved,
