@@ -22,6 +22,10 @@ const User = new mongoose.Schema({
         required: true,
         select: false,
     },
+    maxOriginsLimit: {
+        type: Number,
+        required: true,
+    },
     admin: {
         required: true,
         type: Boolean,
@@ -46,11 +50,11 @@ const User = new mongoose.Schema({
                 pgbrasil: Boolean,
                 pgcelular: Boolean,
                 pgsegura: Boolean,
-                pgredirect: {
+                pgredirecionar: {
                     on: Boolean,
                     url: String,
                 },
-                pgautocapture: Boolean,
+                pgcapturar: Boolean,
             },
         },
     ],

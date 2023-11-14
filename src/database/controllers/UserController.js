@@ -68,6 +68,7 @@ module.exports = class UserController {
 
         const newUser = new User({
             ...newUserData,
+            maxOriginsLimit: 3,
             allowedOrigins: [],
             password,
         });

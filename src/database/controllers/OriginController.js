@@ -17,6 +17,7 @@ module.exports = class OriginController {
     }
 
     async create(username, title, Url, options) {
+        console.log(options);
         let url = Url;
 
         if (!Url.startsWith("http")) {
@@ -29,6 +30,13 @@ module.exports = class OriginController {
         let userOrigins = userData.allowedOrigins || [];
         const checkOrigin = userOrigins.find((o) => o.url === url);
         const hostname = getHostname(url);
+
+        if (userOrigins.length === userData.maxOriginsLimit) {
+            return {
+                status: 401,
+                error: "Ops! Você atingiu seu limite máxio de origens. Entre em contato com nosso suporte caso precise de mais espaço!",
+            };
+        }
 
         if (checkOrigin) return status.url_already_been_created;
 
