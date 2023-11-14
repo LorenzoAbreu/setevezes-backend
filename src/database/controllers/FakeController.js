@@ -11,18 +11,16 @@ module.exports = class FakeController {
     }
 
     async registerUser(username, fakeId, options) {
-        const fakeData = await Fake.findOne({
-            id: fakeId,
-        });
-
+        const fakeData = await Fake.findOne({ id: fakeId });
         if (!fakeData) return status.server_error;
-        console.log(fakeData);
 
         const userData = await User.findOne({ username });
+        if (!userData) return status.server_error;
+
         let userFakes = userData.fakes || [];
         console.log(userFakes);
 
-        if (userFakes.find((id) => id === fakeId)) {
+        if (userFakes.find((fake) => fake.id === fakeId)) {
             return {
                 status: 403,
                 error: "Você já tem este fake!",

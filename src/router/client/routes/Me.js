@@ -5,7 +5,8 @@ const jwt = require("../../../functions/jwt");
 
 router.get("/client/me/fakes", async (req, res) => {
     const user = new UserController();
-    const result = await user.getMyFakes();
+    console.log("/client/me/fakes");
+    const result = await user.getMyFakes(req._username);
     return res.json(result);
 });
 

@@ -116,6 +116,13 @@ module.exports = class UserController {
             username,
         });
 
-        return userData.fakes || [];
+        const userFakes = userData.fakes || [];
+
+        console.log("Fakes do usuário", userFakes);
+
+        return {
+            status: 200,
+            fakes: userFakes,
+        };
     }
 };

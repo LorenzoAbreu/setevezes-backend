@@ -2,7 +2,6 @@ const router = require("express").Router();
 const UserAuthentication = require("../../middlewares/UserAuthentication");
 const ApikeyAuthentication = require("../../middlewares/ApikeyAuthentication");
 
-router.all("/client/me/fakes", UserAuthentication, require("./routes/Fakes"));
 router.all("/client/fakes", UserAuthentication, require("./routes/Fakes"));
 router.all("/client/origins", UserAuthentication, require("./routes/Origins"));
 router.all(
@@ -11,6 +10,7 @@ router.all(
     require("./routes/Origins")
 );
 router.all("/client/me", UserAuthentication, require("./routes/Me"));
+router.all("/client/me/fakes", UserAuthentication, require("./routes/Me"));
 router.all(
     "/client/getCloakerData",
     ApikeyAuthentication,
