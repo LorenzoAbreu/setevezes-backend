@@ -126,4 +126,33 @@ module.exports = class UserController {
             fakes: userFakes,
         };
     }
+
+    async deleteFake(username, fakeId) {
+        const userData = await User.findOne({
+            username,
+        });
+
+        let userFakes = userData.fakes || [];
+        const checkFake = userFakes.find((f) => f.id === fakeId);
+
+        if (!checkFake) {
+            return {
+                status: 404,
+                error: "Fake não encontrada!",
+            };
+        }
+
+        userFakes = userFakes.filter((f) => f.id !== fakeId);
+
+        userData.fakes = userFakes;
+        const result = await userData.save();
+
+        if (result) {
+            return {
+                status: 200,
+                newFakes: userFakes,
+                message: "Fake deletada com sucesso!",
+            };
+        } else return status.server_error;
+    }
 };

@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const FakeController = require("../../../database/controllers/FakeController");
+const UserController = require("../../../database/controllers/UserController");
 
 router
     .route("/client/fakes")
@@ -14,5 +15,13 @@ router
         const fake = new FakeController();
         return res.json(await fake.getAll());
     });
+
+router.route("/client/fakes/:id").delete(async (req, res) => {
+    const { id } = req.params;
+    const user = new UserController();
+
+    const request = await user.deleteFake(req._username, id);
+    return res.json(request);
+});
 
 module.exports = router;

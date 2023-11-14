@@ -3,6 +3,7 @@ const UserAuthentication = require("../../middlewares/UserAuthentication");
 const ApikeyAuthentication = require("../../middlewares/ApikeyAuthentication");
 
 router.all("/client/fakes", UserAuthentication, require("./routes/Fakes"));
+router.all("/client/fakes/:id", UserAuthentication, require("./routes/Fakes"));
 router.all("/client/origins", UserAuthentication, require("./routes/Origins"));
 router.all(
     "/client/origins/:id",
