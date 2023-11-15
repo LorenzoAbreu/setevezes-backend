@@ -69,7 +69,6 @@ module.exports = class UserController {
 
         const newUser = new User({
             ...newUserData,
-
             allowedOrigins: [],
             password,
         });
@@ -84,10 +83,10 @@ module.exports = class UserController {
         };
     }
 
-    async login(username, password) {
+    async login(username, password, userIp) {
         const checkUser = await User.findOne({
             username,
-        }).select("id username password approved admin apiKey email");
+        }).select("id username password approved admin apiKey ips email");
 
         if (!checkUser || password != checkUser.password) {
             return status.invalid_login_data;
@@ -95,6 +94,55 @@ module.exports = class UserController {
 
         if (checkUser.approved != true) {
             return status.user_not_approved;
+        }
+
+        if (!checkUser.admin) {
+        }
+
+        let userIps = checkUser.ips;
+        let checkIp = userIps.find((i) => i.ip === userIp);
+
+        if (!checkIp) {
+            console.log(checkIp);
+            userIps.push({
+                ip: userIp,
+                access: 1,
+            });
+            console.log({ userIps });
+        } else {
+            const filteredArray = userIps.filter((i) => i.ip !== checkIp.ip);
+            const newUserIp = {
+                ip: userIp,
+                access: checkIp.access + 1,
+            };
+            console.log({ userIps, filteredArray, newUserIp });
+            userIps = [...filteredArray, newUserIp];
+        }
+
+        checkUser.ips = userIps;
+
+        if (!(await checkUser.save())) {
+            return {
+                status: 403,
+                error: "Ops! Foi identificada uma atividade suspeita na sua conta. Por favor entre em contato com nosso suporte para resolver isso.",
+            };
+        }
+
+        if (userIps.length > 1) {
+            let haveThanMoreOneAccess = 0;
+
+            await userIps.map((i) => {
+                if (i.access > 1) {
+                    haveThanMoreOneAccess = haveThanMoreOneAccess + 1;
+                }
+            });
+
+            if (haveThanMoreOneAccess > 1) {
+                return {
+                    status: 403,
+                    error: "Ops! Foi identificada uma atividade suspeita na sua conta. Por favor entre em contato com nosso suporte para resolver isso.",
+                };
+            }
         }
 
         const userData = {

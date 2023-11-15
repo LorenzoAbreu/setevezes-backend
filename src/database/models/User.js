@@ -22,6 +22,12 @@ const User = new mongoose.Schema({
         required: true,
         select: false,
     },
+    ips: [
+        {
+            ip: String,
+            access: Number,
+        },
+    ],
     maxOriginsLimit: {
         type: Number,
         required: false,
