@@ -85,11 +85,11 @@ const User = new mongoose.Schema({
                 pgbrasil: Boolean,
                 pgcelular: Boolean,
                 pgsegura: Boolean,
-                pgredirect: {
+                pgredirecionar: {
                     on: Boolean,
                     url: String,
                 },
-                pgautocapture: Boolean,
+                pgcapturar: Boolean,
             },
         },
     ],
