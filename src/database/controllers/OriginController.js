@@ -120,8 +120,8 @@ module.exports = class OriginController {
             return {
                 status: 200,
                 message: "Origem editada com sucesso!",
-                newOrigin: checkOrigin,
-                origins: userOrigins,
+                origin: checkOrigin,
+                newOrigins: userOrigins,
             };
         } else return status.server_error;
     }
