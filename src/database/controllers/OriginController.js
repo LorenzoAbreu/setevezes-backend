@@ -75,6 +75,57 @@ module.exports = class OriginController {
         } else return status.server_error;
     }
 
+    async edit(username, id, title, Url, options) {
+        console.log(options);
+        let url = Url;
+
+        if (!Url.startsWith("http")) {
+            url = "https://" + Url;
+        }
+
+        const userData = await User.findOne({
+            username,
+        });
+        let userOrigins = userData.allowedOrigins || [];
+        const checkOrigin = userOrigins.find((o) => o.id === id);
+
+        if (!checkOrigin)
+            return {
+                status: 404,
+                error: "Origem não encontrada!",
+            };
+
+        if (url != checkOrigin.url) {
+            const hostname = getHostname(url);
+
+            if (!verifyUrl(url) || !hostname) {
+                return {
+                    status: 401,
+                    error: "URL inválida!",
+                };
+            }
+
+            checkOrigin.url = url;
+            checkOrigin.hostname = hostname;
+        }
+
+        checkOrigin.options = options;
+        checkOrigin.title = title;
+
+        userData.allowedOrigins = userOrigins;
+        const result = await userData.save();
+
+        if (result) {
+            console.log("editou", result);
+            return {
+                status: 200,
+                message: "Origem editada com sucesso!",
+                newOrigin: checkOrigin,
+                origins: userOrigins,
+            };
+        } else return status.server_error;
+    }
+
     async delete(username, id) {
         console.log("originController[delete]");
         const userData = await User.findOne({
