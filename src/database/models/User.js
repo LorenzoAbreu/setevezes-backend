@@ -24,7 +24,7 @@ const User = new mongoose.Schema({
     },
     maxOriginsLimit: {
         type: Number,
-        required: true,
+        required: false,
     },
     admin: {
         required: true,

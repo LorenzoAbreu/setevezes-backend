@@ -60,6 +60,7 @@ module.exports = class UserController {
                 "_" +
                 Math.floor(Math.random() * 99999),
             username,
+            maxOriginsLimit: 3,
             email,
             approved: false,
             admin: false,
@@ -68,7 +69,7 @@ module.exports = class UserController {
 
         const newUser = new User({
             ...newUserData,
-            maxOriginsLimit: 3,
+
             allowedOrigins: [],
             password,
         });

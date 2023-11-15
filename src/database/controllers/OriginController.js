@@ -31,7 +31,10 @@ module.exports = class OriginController {
         const checkOrigin = userOrigins.find((o) => o.url === url);
         const hostname = getHostname(url);
 
-        if (userOrigins.length === userData.maxOriginsLimit) {
+        if (
+            userOrigins.length ===
+            (userData.maxOriginsLimit ? userData.maxOriginsLimit : 3)
+        ) {
             return {
                 status: 401,
                 error: "Ops! Você atingiu seu limite máxio de origens. Entre em contato com nosso suporte caso precise de mais espaço!",
@@ -73,6 +76,7 @@ module.exports = class OriginController {
     }
 
     async delete(username, id) {
+        console.log("originController[delete]");
         const userData = await User.findOne({
             username,
         });
